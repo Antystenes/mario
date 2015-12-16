@@ -20,7 +20,11 @@ class Window(QtGui.QWidget):
         super(Window, self).__init__()
         self.lastmsg = ''
         self.userturn = True
+        self.log = open('log','w')
         self.initUI()
+
+    def __del__(self):
+        self.log.close()
 
     def initUI(self):
         """Initializes window with all gui elements"""
@@ -52,12 +56,14 @@ class Window(QtGui.QWidget):
             self.chat.append("")
             self.lastmsg = self.text.toPlainText()
             self.chat.append("User: "+self.text.toPlainText())
+            self.log.write(self.text.toPlainText()+'☯\n')
             self.text.clear()
             self.userturn = False
 
     def InsertText(self, n):
         """Inserts text to chat window"""
         self.chat.insertPlainText(n)
+        self.log.write(n + '☯\n')
 
     def SetUserTurn(self):
         """Allows user to send message"""
